@@ -194,6 +194,7 @@ $conf['settings']['authentication']['allow.oauth2.login'] = 'false';
 $conf['settings']['authentication']['required.email.domains'] = '';
 $conf['settings']['authentication']['hide.booked.login.prompt'] = 'false';
 $conf['settings']['authentication']['captcha.on.login'] = 'false';
+$conf['settings']['authentication']['enable.totp'] = 'false'; // Active ou non l'authentification 2FA TOTP
 /**
  * Credits
  */

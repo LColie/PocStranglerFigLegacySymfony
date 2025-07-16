@@ -1215,7 +1215,16 @@ class Queries
 			`language` = @language,
 			`lastlogin` = @lastlogin,
 			`default_schedule_id` = @scheduleid,
-			`credit_count` = @credit_count
+			`credit_count` = @credit_count,
+			`totp_enabled` = @totp_enabled,
+			`totp_secret` = @totp_secret
+		WHERE
+			`user_id` = @userid';
+
+    public const UPDATE_USER_TOTP_SECRET =
+        'UPDATE `users`
+		SET
+			`totp_secret` = @totp_secret
 		WHERE
 			`user_id` = @userid';
 

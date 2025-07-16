@@ -265,4 +265,7 @@ class ParameterNames
     public const PHONE_SETTING = '@phone_setting';
     public const HOMEPAGE_SELECTION_SETTING = '@homepage_setting';
     public const TIMEZONE_SELECTION_SETTING = '@timezone_setting';
+
+    public const TOTP_ENABLED = '@totp_enabled';
+    public const TOTP_SECRET = '@totp_secret';
 }

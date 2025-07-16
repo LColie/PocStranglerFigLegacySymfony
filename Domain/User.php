@@ -513,13 +513,12 @@ class User
         $user->isCalendarSubscriptionAllowed = $row[ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION];
         $user->publicId = $row[ColumnNames::PUBLIC_ID];
         $user->defaultScheduleId = $row[ColumnNames::DEFAULT_SCHEDULE_ID];
-
         $user->attributes[UserAttribute::Phone] = $row[ColumnNames::PHONE_NUMBER];
         $user->attributes[UserAttribute::Position] = $row[ColumnNames::POSITION];
         $user->attributes[UserAttribute::Organization] = $row[ColumnNames::ORGANIZATION];
-
         $user->isApplicationAdmin = Configuration::Instance()->IsAdminEmail($row[ColumnNames::EMAIL]);
-
+        $user->totpEnabled = isset($row[ColumnNames::TOTP_ENABLED]) ? $row[ColumnNames::TOTP_ENABLED] : 0;
+        $user->totpSecret = isset($row[ColumnNames::TOTP_SECRET]) ? $row[ColumnNames::TOTP_SECRET] : null;
         return $user;
     }
 
@@ -1045,6 +1044,26 @@ class User
         if ($accepted) {
             $this->termsAcceptanceDate = Date::Now();
         }
+    }
+
+    protected $totpEnabled = 0;
+    protected $totpSecret = null;
+
+    public function IsTotpEnabled()
+    {
+        return (bool)$this->totpEnabled;
+    }
+    public function ChangeTotpEnabled($enabled)
+    {
+        $this->totpEnabled = (bool)$enabled;
+    }
+    public function GetTotpSecret()
+    {
+        return $this->totpSecret;
+    }
+    public function ChangeTotpSecret($secret)
+    {
+        $this->totpSecret = $secret;
     }
 }
 

@@ -484,7 +484,9 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
             $user->GetPublicId(),
             $user->Language(),
             $user->GetDefaultScheduleId(),
-            $user->GetCurrentCredits()
+            $user->GetCurrentCredits(),
+            $user->IsTotpEnabled(),
+            $user->GetTotpSecret()
         );
         $db->Execute($updateUserCommand);
 

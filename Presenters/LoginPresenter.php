@@ -129,6 +129,9 @@ class LoginPresenter
         $this->_page->SetKeycloakUrl($this->GetKeycloakUrl());
         $this->_page->SetOauth2Url($this->GetOauth2Url());
         $this->_page->SetOauth2Name($this->GetOauth2Name());
+        
+        // Vérifier si l'utilisateur a activé le TOTP
+        $this->_page->Set('ShowTotpField', $this->_page->IsTotpEnabled());
     }
 
     public function Login()
@@ -137,12 +140,21 @@ class LoginPresenter
             return;
         }
 
-        $id = $this->_page->GetEmailAddress();
+        $email = $this->_page->GetEmailAddress();
 
-        if ($this->authentication->Validate($id, $this->_page->GetPassword())) {
-            $context = new WebLoginContext(new LoginData($this->_page->GetPersistLogin(), $this->_page->GetSelectedLanguage()));
-            $this->authentication->Login($id, $context);
-            $this->_Redirect();
+        if ($this->authentication->Validate($email, $this->_page->GetPassword())) {
+            // Vérifier si l'utilisateur a activé le TOTP
+            if ($this->isTotpEnabled($email)) {
+                // TOTP activé : stocker l'identifiant en session et rediriger vers la page TOTP
+                $_SESSION['pending_login_id'] = $email;
+                header('Location: totp.php');
+                exit;
+            } else {
+                // TOTP non activé : connexion directe
+                $context = new WebLoginContext(new LoginData($this->_page->GetPersistLogin(), $this->_page->GetSelectedLanguage()));
+                $this->authentication->Login($email, $context);
+                $this->_Redirect();
+            }
         } else {
             sleep(2);
             $this->authentication->HandleLoginFailure($this->_page);
@@ -348,5 +360,35 @@ class LoginPresenter
 
             return $Oauth2Name;
         }
+    }
+
+    private function verify2faWithSymfony($email, $code) {
+        $url = 'http://localhost/symfony/authentication/2fa/verify';
+        $data = ['code' => $code, 'email' => $email];
+        $options = [
+            'http' => [
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($data),
+            ],
+        ];
+        $context  = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        $response = json_decode($result, true);
+        return isset($response['success']) && $response['success'] === true;
+    }
+
+    private function isTotpEnabled($email) {
+        $command = new AuthorizationCommand($email);
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+        if ($row = $reader->GetRow()) {
+            // Récupérer les informations complètes de l'utilisateur
+            $getUserCommand = new GetUserByIdCommand($row['user_id']);
+            $userReader = ServiceLocator::GetDatabase()->Query($getUserCommand);
+            if ($userRow = $userReader->GetRow()) {
+                return isset($userRow['totp_enabled']) && $userRow['totp_enabled'] == 1;
+            }
+        }
+        return false;
     }
 }

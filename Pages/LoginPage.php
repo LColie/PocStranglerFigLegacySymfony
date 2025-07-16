@@ -374,4 +374,28 @@ class LoginPage extends Page implements ILoginPage
             $this->Set('Oauth2Name', $Oauth2Name);
         }
     }
+
+    public function Get2faCode()
+    {
+        return $this->GetForm(FormKeys::TWO_FACTOR_CODE);
+    }
+
+    public function IsTotpEnabled()
+    {
+        $email = $this->GetEmailAddress();
+        if (empty($email)) {
+            return false;
+        }
+        
+        $command = new AuthorizationCommand($email);
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+        if ($row = $reader->GetRow()) {
+            $getUserCommand = new GetUserByIdCommand($row['user_id']);
+            $userReader = ServiceLocator::GetDatabase()->Query($getUserCommand);
+            if ($userRow = $userReader->GetRow()) {
+                return isset($userRow['totp_enabled']) && $userRow['totp_enabled'] == 1;
+            }
+        }
+        return false;
+    }
 }

@@ -1,0 +1,47 @@
+services:
+  app:
+    image: librebooking/librebooking:develop
+    container_name: app
+    restart: always
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/html
+      - app_conf:/config
+    environment: 
+      - LB_DB_NAME=librebooking
+      - LB_DB_USER=lb_user
+      - LB_DB_USER_PWD=password
+      - LB_DB_HOST=db
+      - LB_INSTALL_PWD=password
+      - LB_ENV=dev
+      - LB_LOG_FOLDER=/var/log/librebooking
+      - LB_LOG_LEVEL=debug
+      - LB_LOG_SQL=false
+      - TZ=Europe/Zurich
+  db:
+    image: linuxserver/mariadb:10.6.13
+    container_name: db
+    restart: always
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Zurich
+      - MYSQL_DATABASE=librebooking
+      - MYSQL_USER=lb_user
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_ROOT_HOST=%
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_conf:/config
+
+volumes:
+  db_conf:
+  app_conf:

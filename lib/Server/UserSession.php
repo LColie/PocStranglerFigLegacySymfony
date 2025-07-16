@@ -16,6 +16,8 @@ class UserSession
     public $PublicId = '';
     public $LoginTime = '';
     public $ScheduleId = '';
+    public $TotpEnabled = false;
+    public $TotpSecret = '';
     public $Groups = [];
     public $AdminGroups = [];
     public $CSRFToken = '';

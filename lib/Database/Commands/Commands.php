@@ -2907,7 +2907,9 @@ class UpdateUserCommand extends SqlCommand
         $publicId,
         $language,
         $scheduleId,
-        $currentCreditCount
+        $currentCreditCount,
+        $totpEnabled,
+        $totpSecret
     ) {
         parent::__construct(Queries::UPDATE_USER);
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
@@ -2927,6 +2929,18 @@ class UpdateUserCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::LANGUAGE, $language));
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
         $this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $currentCreditCount));
+        $this->AddParameter(new Parameter(ParameterNames::TOTP_ENABLED, (int)$totpEnabled));
+        $this->AddParameter(new Parameter(ParameterNames::TOTP_SECRET, $totpSecret));
+    }
+}
+
+class UpdateUserTotpSecretCommand extends SqlCommand
+{
+    public function __construct($userId, $totpSecret)
+    {
+        parent::__construct(Queries::UPDATE_USER_TOTP_SECRET);
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+        $this->AddParameter(new Parameter(ParameterNames::TOTP_SECRET, $totpSecret));
     }
 }
 

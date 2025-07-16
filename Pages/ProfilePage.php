@@ -60,6 +60,18 @@ interface IProfilePage extends IPage, IActionPage
      * @param IAuthenticationActionOptions $options
      */
     public function SetAllowedActions($options);
+
+    public function SetTotpEnabled($enabled);
+
+    public function GetTotpEnabled();
+
+    public function SetShowTotpQrCode($show);
+
+    public function SetTotpQrCodeUrl($url);
+
+    public function SetTotpSecret($secret);
+
+    public function GetTotpSecret();
 }
 
 class ProfilePage extends ActionPage implements IProfilePage
@@ -230,5 +242,35 @@ class ProfilePage extends ActionPage implements IProfilePage
         $this->Set('AllowPhoneChange', $options->AllowPhoneChange());
         $this->Set('AllowPositionChange', $options->AllowPositionChange());
         $this->Set('AllowUsernameChange', $options->AllowUsernameChange());
+    }
+
+    public function SetTotpEnabled($enabled)
+    {
+        $this->Set('TotpEnabled', $enabled);
+    }
+
+    public function GetTotpEnabled()
+    {
+        return $this->GetForm('TOTP_ENABLED') ? 1 : 0;
+    }
+
+    public function SetShowTotpQrCode($show)
+    {
+        $this->Set('ShowTotpQrCode', $show);
+    }
+
+    public function SetTotpQrCodeUrl($url)
+    {
+        $this->Set('TotpQrCodeUrl', $url);
+    }
+
+    public function SetTotpSecret($secret)
+    {
+        $this->Set('TotpSecret', $secret);
+    }
+
+    public function GetTotpSecret()
+    {
+        return $this->GetForm('TOTP_SECRET');
     }
 }

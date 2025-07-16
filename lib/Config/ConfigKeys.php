@@ -154,6 +154,7 @@ class ConfigKeys
     public const AUTHENTICATION_REQUIRED_EMAIL_DOMAINS = 'required.email.domains';
     public const AUTHENTICATION_HIDE_BOOKED_LOGIN_PROMPT = 'hide.booked.login.prompt';
     public const AUTHENTICATION_CAPTCHA_ON_LOGIN = 'captcha.on.login';
+    public const AUTHENTICATION_ENABLE_TOTP = 'enable.totp';
 
     public const SLACK_TOKEN = 'token';
 

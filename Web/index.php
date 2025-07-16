@@ -1,5 +1,4 @@
 <?php
-
 define('ROOT_DIR', '../');
 
 if (!file_exists(ROOT_DIR . 'config/config.php')) {

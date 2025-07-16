@@ -156,7 +156,7 @@ class fr_fr extends en_gb
         $strings['AllUsers'] = 'Tous les Utilisateurs';
         $strings['AllGroups'] = 'Tous les Groupes';
         $strings['AllSchedules'] = 'Tous les Plannings';
-        $strings['UsernameOrEmail'] = 'Nom d\'utilisateur ou Email';
+        $strings['UsernameOrEmail'] = 'Email';
         $strings['Members'] = 'Membres';
         $strings['QuickSlotCreation'] = 'Créer des créneaux toutes les %s minutes entre %s et %s';
         $strings['ApplyUpdatesTo'] = 'Appliquer les Mises à jour à';
@@ -756,6 +756,10 @@ class fr_fr extends en_gb
         $strings['GroupMembership'] = 'Membres du Groupe';
         $strings['AvailableGroups'] = 'Groupes Disponibles';
         $strings['CheckingAvailabilityError'] = 'Ne peut obtenir la disponibilité de la ressource - trop de ressources';
+        $strings['EnableTotp'] = "Activer l'authentification 2FA (TOTP)";
+        $strings['TotpHelp'] = "Protégez votre compte avec une application d'authentification (Google Authenticator, etc.).";
+        $strings['TotpEnabledInfo'] = "2FA activé. Pour désactiver, décochez la case et enregistrez.";
+        $strings['TotpDisabledInfo'] = "2FA désactivé. Activez-le pour plus de sécurité.";
         // End Strings
 
         // Install

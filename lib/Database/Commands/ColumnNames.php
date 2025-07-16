@@ -28,6 +28,8 @@ class ColumnNames
     public const DEFAULT_SCHEDULE_ID = 'default_schedule_id';
     public const USER_PREFERENCES = 'preferences';
     public const USER_STATUS = 'status_id';
+    public const TOTP_ENABLED = 'totp_enabled';
+    public const TOTP_SECRET = 'totp_secret';
 
     // USER_ADDRESSES //
     public const ADDRESS_ID = 'address_id';

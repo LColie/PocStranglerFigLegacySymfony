@@ -48,9 +48,7 @@ class ProfilePresenter extends ActionPresenter
     public function PageLoad()
     {
         $userSession = ServiceLocator::GetServer()->GetUserSession();
-
         Log::Debug('ProfilePresenter loading user %s', $userSession->UserId);
-
         $user = $this->userRepository->LoadById($userSession->UserId);
 
         $this->page->SetUsername($user->Username());
@@ -59,6 +57,12 @@ class ProfilePresenter extends ActionPresenter
         $this->page->SetEmail($user->EmailAddress());
         $this->page->SetTimezone($user->Timezone());
         $this->page->SetHomepage($user->Homepage());
+        $this->page->SetTotpEnabled($user->IsTotpEnabled());
+
+        // Définir les variables TOTP pour le template
+        $this->page->SetShowTotpQrCode(false); // Par défaut, ne pas afficher le QR code
+        $this->page->SetTotpQrCodeUrl('');
+        $this->page->SetTotpSecret('');
 
         $this->page->SetPhone($user->GetAttribute(UserAttribute::Phone));
         $this->page->SetOrganization($user->GetAttribute(UserAttribute::Organization));
@@ -67,6 +71,9 @@ class ProfilePresenter extends ActionPresenter
         $userId = $userSession->UserId;
 
         $this->page->SetAttributes($this->GetAttributes($userId));
+
+        // Mettre à jour la session avec les valeurs de la base de données
+        $userSession->TotpEnabled = $user->IsTotpEnabled();
 
         $this->PopulateTimezones();
         $this->PopulateHomepages();
@@ -77,7 +84,6 @@ class ProfilePresenter extends ActionPresenter
     {
         $userSession = ServiceLocator::GetServer()->GetUserSession();
         Log::Debug('ProfilePresenter updating profile for user %s', $userSession->UserId);
-
         $user = $this->userRepository->LoadById($userSession->UserId);
 
         $user->ChangeName($this->page->GetFirstName(), $this->page->GetLastName());
@@ -88,13 +94,19 @@ class ProfilePresenter extends ActionPresenter
         $user->ChangeAttributes($this->page->GetPhone(), $this->page->GetOrganization(), $this->page->GetPosition());
         $user->ChangeCustomAttributes($this->GetAttributeValues(), false);
 
+        $user->ChangeTotpEnabled($this->page->GetTotpEnabled());
+        $user->ChangeTotpSecret($this->page->GetTotpSecret());
+
         $userSession->Email = $this->page->GetEmail();
         $userSession->FirstName = $this->page->GetFirstName();
         $userSession->LastName = $this->page->GetLastName();
         $userSession->HomepageId = $this->page->GetHomepage();
         $userSession->Timezone = $this->page->GetTimezone();
+        $userSession->TotpEnabled = $this->page->GetTotpEnabled();
+        $userSession->TotpSecret = $this->page->GetTotpSecret();
 
         $this->userRepository->Update($user);
+
         ServiceLocator::GetServer()->SetUserSession($userSession);
     }
 

@@ -52,6 +52,15 @@
                             </div>
                         {/if}
 
+                        <!-- Champ 2FA (affiché si activé) -->
+                        {if $ShowTotpField}
+                            <div class="input-group mb-2">
+                                <span class="input-group-text"><i class="bi bi-shield-lock-fill"></i></span>
+                                <input type="text" id="twoFactorCode" {formname key=TWO_FACTOR_CODE}
+                                    class="form-control" value="" placeholder="Code 2FA" autocomplete="one-time-code" />
+                            </div>
+                        {/if}
+
                         {if $EnableCaptcha}
                             <div class="text-center mb-2">
                                 {control type="CaptchaControl"}
@@ -172,6 +181,5 @@
             }
         }
     }
-    });
 </script>
 {include file='globalfooter.tpl'}

@@ -285,6 +285,7 @@ class FormKeys
     public const UPDATE_ON_IMPORT = 'UPDATE_ON_IMPORT';
 
     public const VALUE = 'value';
+    public const TWO_FACTOR_CODE = 'twoFactorCode';
 
     public static function Evaluate($formKey)
     {
