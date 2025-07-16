@@ -36,7 +36,7 @@ Cela va :
 Après quelques secondes, l’application sera accessible à l’adresse suivante :
 
 ```
-http://localhost:8080
+http://localhost/Web/
 ```
 
 > Le port peut varier selon la configuration de votre `docker-compose.yml`.
