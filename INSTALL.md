@@ -38,6 +38,10 @@ Après quelques secondes, l’application sera accessible à l’adresse suivant
 ```
 http://localhost/Web/
 ```
+login : 
+- user@example.com / user
+- admin@example.com / admin
+(forcer éventuellement le mot de passe en SHA1 en base vu que les pass par défaut ne sont pas indiqués)
 
 > Le port peut varier selon la configuration de votre `docker-compose.yml`.
 
