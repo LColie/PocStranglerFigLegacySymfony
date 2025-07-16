@@ -89,6 +89,8 @@ Note: This instance is public and **resets every 20 minutes** to ensure a clean 
 
 ## 🔧 Installation & Deployment
 
+👉 Pour une installation rapide du Poc en local avec Docker, consulte le guide [INSTALL.md](INSTALL.md).
+
 ### Manual Installation
 
 To run LibreBooking from a prebuilt release, your server needs:
